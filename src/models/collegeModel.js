@@ -1,17 +1,17 @@
 const mongoose = require("mongoose")
 
-
-
 const collegeSchema = new mongoose.Schema({
-
     name: {
         type: String,
         require: true,
-        unique: true
+        unique: true,
+        trim:true
+        
     },
     fullName: {
         type: String,
-        require: true
+        require: true,
+        trim:true
     },
     logoLink: {
         type: String,
@@ -21,10 +21,7 @@ const collegeSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
-
-
+    
 }, { timestamps: true })
-
-
 
 module.exports = mongoose.model("College", collegeSchema)
