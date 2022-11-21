@@ -52,7 +52,7 @@ const createCollege= async function(req,res){
 
         }
         if(!isValidLink(logoLink)){
-            return res.status(400).send({ status: false, msg: "Please enter avalid logoLink" });
+            return res.status(400).send({ status: false, msg: "Please enter a valid logoLink" });
 
         }
         const creatData= await collegeModel.create(data)
@@ -67,29 +67,29 @@ const createCollege= async function(req,res){
 
 const getDetail=async function(req,res){
     try {
-        let collegeName=req.query.collegeName
-         if( !collegeName){
-            return res.status(400).send({status:false,msg:"Please provide the college name "})
-         }
-        if(!isValidShortName (collegeName)){
-            return res.status(400).send({status:false,msg:"Please enter valid college name"})
-
+        let collegeName = req.query.collegeName
+        if (!collegeName) {
+            return res.status(400).send({ status: false, message: "Please provide a college Name" })
         }
-        let details=await collegeModel.findOne({name:collegeName.toLowerCase(), isDeleted:false})
-        if(!details){
-            return res.status(404).send({status:false,msg:"Data not found"})
-
+        if (!isValidShortName(collegeName)) {
+            return res.status(400).send({ status: false, message: "collegeName can contain only letters" })
         }
-        let ColId = details["_id"]
+        let collegeDetail = await collegeModel.findOne({ name: collegeName.toLowerCase() , isDeleted:false})
+        if (!collegeDetail) {
+            return res.status(404).send({ status: false, message: "No college exists with this Name" })
+        }
+        let ColId = collegeDetail["_id"]
         let Interns = await internModel.find({ collegeId: ColId ,isDeleted:false}).select({name:1,email:1,mobile:1})
-        
-        let data={name:details.name,fullName:details.fullName,logoLink:details.logoLink,interns:Interns}
-        return res.status(200).send({status:true,msg:data})
-
-    } catch (error) {
+       
+        let data={name:collegeDetail.name,fullName:collegeDetail.fullName,logoLink:collegeDetail.logoLink,interns:Interns}
+        return res.status(200).send({data:data,status:true})
+    }
+    catch (error) {
         return res.status(500).send({status:false,msg:error.message})
         
     }
 }
 
 module.exports={createCollege,getDetail}
+
+
