@@ -35,7 +35,7 @@ const createCollege= async function(req,res){
             return res.status(400).send({ status: false, msg: "Name is required" });
         }   
         data.name=data.name.toLowerCase()
-
+        name=data.name.trim()
         if(!isValidShortName(name)){
             return res.status(400).send({ status: false, msg: "Name should be contain alphabets only" });
 
@@ -51,6 +51,7 @@ const createCollege= async function(req,res){
             return res.status(400).send({ status: false, msg: "fullName should be contain alphabets only" });
 
         }
+        logoLink=data.logoLink.trim()
         if(!isValidLink(logoLink)){
             return res.status(400).send({ status: false, msg: "Please enter a valid logoLink" });
 
@@ -82,7 +83,7 @@ const getDetail=async function(req,res){
         let Interns = await internModel.find({ collegeId: ColId ,isDeleted:false}).select({name:1,email:1,mobile:1})
        
         let data={name:collegeDetail.name,fullName:collegeDetail.fullName,logoLink:collegeDetail.logoLink,interns:Interns}
-        return res.status(200).send({data:data,status:true})
+        return res.status(200).send({status:true,data:data})
     }
     catch (error) {
         return res.status(500).send({status:false,msg:error.message})
