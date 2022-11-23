@@ -51,6 +51,7 @@ const createCollege= async function(req,res){
             return res.status(400).send({ status: false, msg: "fullName should be contain alphabets only" });
 
         }
+        if(!logoLink) return res.status(400).send({status:false,msg:"logo link is required"})
         logoLink=data.logoLink.trim()
         if(!isValidLink(logoLink)){
             return res.status(400).send({ status: false, msg: "Please enter a valid logoLink" });
