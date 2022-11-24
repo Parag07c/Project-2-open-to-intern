@@ -52,6 +52,7 @@ const createCollege= async function(req,res){
 
         }
         if(!logoLink) return res.status(400).send({status:false,message:"logo link is required"})
+        
         logoLink=data.logoLink.trim()
         
         if(!isValidLink(logoLink)){
